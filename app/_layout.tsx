@@ -1,10 +1,24 @@
 import * as SplashScreen from 'expo-splash-screen'
 import { useFonts } from 'expo-font'
 import { useEffect } from 'react'
-import { Stack } from 'expo-router'
+import { router, Stack } from 'expo-router'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 SplashScreen.preventAutoHideAsync()
 
 export default function Layout () {
+  useEffect(() => {
+    const checkToken = async () => {
+      const data = await AsyncStorage.getItem('token')
+      const parsed = data ? JSON.parse(data) : null
+
+      if (!parsed.token) {
+        router.replace('/login/login')
+      }
+    }
+
+    checkToken()
+  }, [])
+
   // fonts
   const [loaded, error] = useFonts({
     Exo400: require('../assets/fonts/Exo400.ttf'),

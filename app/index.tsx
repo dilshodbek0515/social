@@ -1,12 +1,10 @@
-import { Image, StatusBar, StyleSheet, Text, View } from 'react-native'
-import { useState } from 'react'
+import { Pressable, StatusBar, StyleSheet, Text, View } from 'react-native'
 import { Colors, Gap, Padding } from '../shared/tokkens'
-import Buttons from '../shared/buttons/Buttons'
-import Login from './login/login'
+import { useSetAtom } from 'jotai'
+import { logoutAtom } from '../entities/auth/model/auth.state'
 
 export default function App () {
-  const [active, setActive] = useState<boolean | string>('login')
-
+  const handleLogout = useSetAtom(logoutAtom)
   return (
     <View style={styles.container}>
       <StatusBar
@@ -15,43 +13,11 @@ export default function App () {
         barStyle={'dark-content'}
       />
 
-      <Image
-        style={styles.logo}
-        source={require('../assets/images/logo.png')}
-        resizeMode='contain'
-      />
+      <Text>Home page</Text>
 
-      <View style={styles.content}>
-        <Text style={styles.login__title}>Get Started now</Text>
-        <Text style={styles.login__description}>
-          Create an account or log in to explore about our app
-        </Text>
-      </View>
-
-      <View style={styles.pass}>
-        <Buttons
-          text='Log in'
-          isActive={active === 'login'}
-          onPress={() => setActive('login')}
-        />
-        <Buttons
-          text='Sign up'
-          isActive={active === 'signup'}
-          onPress={() => setActive('signup')}
-        />
-      </View>
-
-      {active === 'login' && (
-        <>
-          <Login />
-        </>
-      )}
-
-      {active === 'signup' && (
-        <>
-          <Text style={{ color: 'black', fontSize: 30 }}>Sign up</Text>
-        </>
-      )}
+      <Pressable onPress={handleLogout} style={styles.log}>
+        <Text style={styles.logout}>Log out</Text>
+      </Pressable>
     </View>
   )
 }
@@ -60,41 +26,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.light,
-    alignItems: 'center',
     padding: Padding.padding24,
-    gap: Gap.gap24
+    gap: Gap.gap24,
+    justifyContent: 'center'
   },
-
-  content: {
-    gap: Gap.gap12
+  log: {
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-
-  logo: {
-    width: 27
-  },
-
-  login__title: {
-    color: Colors.black,
-    fontSize: 32,
-    fontFamily: 'Exo700',
-    textAlign: 'center'
-  },
-
-  login__description: {
-    color: Colors.gray,
-    fontSize: 12,
-    fontFamily: 'Exo400',
-    textAlign: 'center',
-    width: 200
-  },
-
-  pass: {
-    flexDirection: 'row',
+  logout: {
     width: '100%',
-    height: 36,
-    backgroundColor: Colors.pass,
-    boxShadow: '0px 3px 6px 0px #00000005 inset',
-    borderRadius: 7,
-    padding: 2
+    backgroundColor: 'red',
+    textAlign: 'center',
+    paddingVertical: 10,
+    borderRadius: 20,
+    fontSize: 20,
+    color: 'white'
   }
 })

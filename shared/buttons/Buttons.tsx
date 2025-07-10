@@ -1,17 +1,27 @@
-import { BtnType } from '../../entities/model/interface/btn.state.interface'
-import { Pressable, StyleSheet, Text } from 'react-native'
+import { BtnType } from '../../entities/auth/model/interface/interface'
+import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native'
 import { Colors } from '../tokkens'
 
-export default function Buttons ({ text, isActive, onPress, ...props }: BtnType) {
+export default function Buttons ({
+  text,
+  isLoading,
+  isActive,
+  onPress,
+  ...props
+}: BtnType) {
   return (
     <Pressable
       onPress={onPress}
       style={[styles.btns, isActive && styles.active__btn]}
       {...props}
     >
-      <Text style={[styles.btn__text, isActive && styles.active__text]}>
-        {text}
-      </Text>
+      {!isLoading ? (
+        <Text style={[styles.btn__text, isActive && styles.active__text]}>
+          {text}
+        </Text>
+      ) : (
+        <ActivityIndicator color={'white'} size={'large'} />
+      )}
     </Pressable>
   )
 }

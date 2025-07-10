@@ -1,102 +1,249 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import {
+  ActivityIndicator,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native'
 import Inputs from '../../shared/inputs/Inputs'
-import { Gap } from '../../shared/tokkens'
+import { Gap, Padding } from '../../shared/tokkens'
 import { Colors } from '../../shared/tokkens'
 import { useState } from 'react'
 import Google from '../../assets/icons/google'
 import Facebook from '../../assets/icons/facebook'
 import Iphone from '../../assets/icons/iphone'
 import Android from '../../assets/icons/android'
+import { Notification } from '../../shared/notifacation/error.notifacation'
+import { useAtom } from 'jotai'
+import { loginAtom } from '../../entities/auth/model/auth.state'
+import Buttons from '../../shared/buttons/Buttons'
+import Signup from '../signup/signup'
 
 export default function Login () {
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
   const [checkbox, setCheckbox] = useState<boolean>(false)
-  const formFile = email.trim() !== '' && password.trim() !== ''
+  const [error, setError] = useState<string | undefined>()
+  const [active, setActive] = useState<boolean | string>('login')
+  const [{ isLoading, token, error: err }, setLogin] = useAtom(loginAtom)
+
+  // inputdan qiymat olish
+  const [inputValue, setInputValue] = useState({
+    email: 'vasia@pupkin.ru',
+    password: '12345678'
+  })
+
+  // inputlarda qiymat bor yuqligini tekshirish
+  const formFile =
+    inputValue.email.trim() !== '' && inputValue.password.trim() !== ''
+
+  // xatolik qaytarish
+  const alert = (errorText: string) => {
+    setError(errorText)
+
+    setTimeout(() => {
+      setError(undefined)
+    }, 2000)
+  }
+
+  // input qiymatlarini tekshirish
+  const submit = () => {
+    if (!inputValue.email) {
+      alert('Emailni kiriting')
+      return
+    } else if (!inputValue.password) {
+      alert('Passwordni kiriting')
+      return
+    } else if (
+      (inputValue.email !== 'vasia@pupkin.ru',
+      inputValue.password !== '12345678')
+    ) {
+      alert('You have an error.')
+    } else {
+      setLogin({ email: inputValue.email, password: inputValue.password })
+    }
+  }
 
   return (
-    <>
-      <View style={styles.collection}>
-        <View>
-          <Text style={styles.email_text}>Email</Text>
-          <Inputs
-            value={email}
-            placeholder='Enter your email'
-            onChangeText={setEmail}
-          />
-        </View>
+    <View style={styles.container}>
+      <Notification error={error} />
+      <Image
+        style={styles.logo}
+        source={require('../../assets/images/logo.png')}
+        resizeMode='contain'
+      />
 
-        <View>
-          <Text style={styles.email_text}>Pssword</Text>
-          <Inputs
-            isPassword
-            placeholder='Enter your password'
-            keyboardType='numeric'
-            value={password}
-            onChangeText={setPassword}
-          />
-        </View>
-
-        <View style={styles.checked}>
-          <Pressable style={styles.flex} onPress={() => setCheckbox(!checkbox)}>
-            <View style={[styles.checkbox, checkbox && styles.checkedBox]}>
-              {checkbox && <Text style={styles.checkmark}>✓</Text>}
-            </View>
-            <Text style={styles.label}>Remember me</Text>
-          </Pressable>
-          <Text style={styles.forgot}>Forgot Password ?</Text>
-        </View>
-      </View>
-
-      <Pressable
-        style={[
-          styles.login_btn,
-          {
-            backgroundColor: formFile ? Colors.active_btn : Colors.boder
-          }
-        ]}
-        disabled={!formFile}
-      >
-        <Text
-          style={[
-            styles.login_text,
-            { color: formFile ? Colors.light : Colors.login_btn }
-          ]}
-        >
-          Log in
+      <View style={styles.content}>
+        <Text style={styles.login__title}>Get Started now</Text>
+        <Text style={styles.login__description}>
+          Create an account or log in to explore about our app
         </Text>
-      </Pressable>
-
-      <View style={styles.line}>
-        <View style={styles.to__line} />
-        <Text style={styles.with}>Or login with</Text>
-        <View style={styles.to__line} />
       </View>
 
-      <View style={styles.applications}>
-        <View style={styles.app__child}>
-          <Google />
-        </View>
-        <View style={styles.app__child}>
-          <Facebook />
-        </View>
-        <View style={styles.app__child}>
-          <Iphone />
-        </View>
-        <View style={styles.app__child}>
-          <Android />
-        </View>
+      <View style={styles.pass}>
+        <Buttons
+          text='Log in'
+          isActive={active === 'login'}
+          onPress={() => setActive('login')}
+        />
+        <Buttons
+          text='Sign up'
+          isActive={active === 'signup'}
+          onPress={() => setActive('signup')}
+        />
       </View>
-    </>
+
+      {active === 'login' && (
+        <>
+          {/* inputs */}
+          <View style={styles.collection}>
+            {/* email */}
+            <View>
+              <Text style={styles.email_text}>Email</Text>
+              <Inputs
+                value={inputValue.email}
+                placeholder='Enter your email'
+                onChangeText={value =>
+                  setInputValue(props => ({
+                    ...props,
+                    email: value
+                  }))
+                }
+              />
+            </View>
+
+            {/* password */}
+            <View>
+              <Text style={styles.email_text}>Pssword</Text>
+              <Inputs
+                isPassword
+                placeholder='Enter your password'
+                keyboardType='numeric'
+                value={inputValue.password}
+                onChangeText={value =>
+                  setInputValue(props => ({
+                    ...props,
+                    password: value
+                  }))
+                }
+              />
+            </View>
+
+            {/* checkbox */}
+            <View style={styles.checked}>
+              <Pressable
+                style={styles.flex}
+                onPress={() => setCheckbox(!checkbox)}
+              >
+                <View style={[styles.checkbox, checkbox && styles.checkedBox]}>
+                  {checkbox && <Text style={styles.checkmark}>✓</Text>}
+                </View>
+                <Text style={styles.label}>Remember me</Text>
+              </Pressable>
+              <Text style={styles.forgot}>Forgot Password ?</Text>
+            </View>
+          </View>
+
+          {/* login button */}
+          <Pressable
+            onPress={submit}
+            style={[
+              styles.login_btn,
+              {
+                backgroundColor: formFile ? Colors.active_btn : Colors.boder
+              }
+            ]}
+            disabled={!formFile}
+          >
+            <Text
+              style={[
+                styles.login_text,
+                { color: formFile ? Colors.light : Colors.login_btn }
+              ]}
+            >
+              {!isLoading ? (
+                'Log in'
+              ) : (
+                <ActivityIndicator color={Colors.light} size={'large'} />
+              )}
+            </Text>
+          </Pressable>
+
+          {/* line */}
+          <View style={styles.line}>
+            <View style={styles.to__line} />
+            <Text style={styles.with}>Or login with</Text>
+            <View style={styles.to__line} />
+          </View>
+
+          {/* applications */}
+          <View style={styles.applications}>
+            <View style={styles.app__child}>
+              <Google />
+            </View>
+            <View style={styles.app__child}>
+              <Facebook />
+            </View>
+            <View style={styles.app__child}>
+              <Iphone />
+            </View>
+            <View style={styles.app__child}>
+              <Android />
+            </View>
+          </View>
+        </>
+      )}
+
+      {active === 'signup' && <Signup />}
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.light,
+    alignItems: 'center',
+    padding: Padding.padding24,
+    gap: Gap.gap24
+  },
+
   collection: {
     width: '100%',
     gap: Gap.gap16
   },
 
+  content: {
+    gap: Gap.gap12
+  },
+
+  logo: {
+    width: 27
+  },
+
+  login__title: {
+    color: Colors.black,
+    fontSize: 32,
+    fontFamily: 'Exo700',
+    textAlign: 'center'
+  },
+
+  login__description: {
+    color: Colors.gray,
+    fontSize: 12,
+    fontFamily: 'Exo400',
+    textAlign: 'center',
+    width: 200
+  },
+
+  pass: {
+    flexDirection: 'row',
+    width: '100%',
+    height: 36,
+    backgroundColor: Colors.pass,
+    boxShadow: '0px 3px 6px 0px #00000005 inset',
+    borderRadius: 7,
+    padding: 2
+  },
   email_text: {
     fontSize: 12,
     fontFamily: 'Exo500',

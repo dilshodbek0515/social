@@ -8,7 +8,9 @@ export const Colors = {
   outline: '#3672EA',
   forgot: '#4D81E7',
   login_btn: '#ACB5BB',
-  active_btn: '#1D61E7'
+  active_btn: '#1D61E7',
+  error_bg: '#141417',
+  info__bg:'#FF4545'
 }
 
 export const Gap = {
