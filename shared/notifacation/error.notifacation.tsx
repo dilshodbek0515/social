@@ -11,20 +11,25 @@ export function Notification ({ error }: ErrorNotificationProps) {
   const [shown, setShown] = useState(false)
   const animatedValue = useRef(new Animated.Value(-100)).current
 
-  // xabar kelishi
-  const onEnter = () => {
+  const show = () => {
+    animatedValue.setValue(-100)
+    setShown(true)
+
     Animated.timing(animatedValue, {
-      toValue: insetsTop + 10,
+      toValue: insetsTop + 35,
       duration: 400,
       useNativeDriver: true
     }).start()
+
+    setTimeout(() => {
+      hide()
+    }, 2000)
   }
 
-  // xabar yuqolishi
-  const onExit = () => {
+  const hide = () => {
     Animated.timing(animatedValue, {
       toValue: -100,
-      duration: 1000,
+      duration: 400,
       useNativeDriver: true
     }).start(() => {
       setShown(false)
@@ -32,19 +37,9 @@ export function Notification ({ error }: ErrorNotificationProps) {
   }
 
   useEffect(() => {
-    if (!error) {
-      setShown(false)
-      return
+    if (error) {
+      show()
     }
-
-    setShown(true)
-    onEnter()
-
-    const timer = setTimeout(() => {
-      onExit()
-    }, 3000)
-
-    return () => clearTimeout(timer)
   }, [error])
 
   if (!shown) return null
@@ -64,7 +59,7 @@ export function Notification ({ error }: ErrorNotificationProps) {
         </View>
         <Text style={styles.errorText}>{error}</Text>
       </View>
-      <Pressable onPress={onExit}>
+      <Pressable onPress={hide}>
         <Closed />
       </Pressable>
     </Animated.View>

@@ -42,22 +42,16 @@ export default function Login () {
 
     setTimeout(() => {
       setError(undefined)
-    }, 2000)
+    }, 5000)
   }
 
   // input qiymatlarini tekshirish
   const submit = () => {
-    if (!inputValue.email) {
-      alert('Emailni kiriting')
-      return
-    } else if (!inputValue.password) {
-      alert('Passwordni kiriting')
-      return
-    } else if (
+    if (
       (inputValue.email !== 'vasia@pupkin.ru',
       inputValue.password !== '12345678')
     ) {
-      alert('You have an error.')
+      alert('Login or Password error')
     } else {
       setLogin({ email: inputValue.email, password: inputValue.password })
     }
