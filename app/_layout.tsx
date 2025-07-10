@@ -1,4 +1,3 @@
-import { Text, View } from 'react-native'
 import * as SplashScreen from 'expo-splash-screen'
 import { useFonts } from 'expo-font'
 import { useEffect } from 'react'
