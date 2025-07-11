@@ -8,11 +8,16 @@ SplashScreen.preventAutoHideAsync()
 export default function Layout () {
   useEffect(() => {
     const checkToken = async () => {
+      const visited = await AsyncStorage.getItem('visited')
       const data = await AsyncStorage.getItem('token')
       const parsed = data ? JSON.parse(data) : null
 
-      if (!parsed.token) {
+      if (!visited) {
+        router.replace('/welcome')
+      } else if (!parsed?.token) {
         router.replace('/login/login')
+      } else {
+        router.replace('/')
       }
     }
 
