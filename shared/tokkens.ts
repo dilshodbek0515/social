@@ -10,7 +10,10 @@ export const Colors = {
   login_btn: '#ACB5BB',
   active_btn: '#1D61E7',
   error_bg: '#141417',
-  info__bg:'#FF4545'
+  info__bg: '#FF4545',
+  welcome: '#5151C6',
+  welcome__btn: '#D0D0D04D',
+  error: '#D80027'
 }
 
 export const Gap = {

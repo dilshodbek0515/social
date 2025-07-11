@@ -11,15 +11,16 @@ import EyeClosedIcon from '../../assets/icons/icons-closed'
 import EyeOpenIcon from '../../assets/icons/icons-open'
 
 export default function Inputs ({
+  redError,
   isPassword,
   ...props
-}: TextInputProps & { isPassword?: boolean }) {
+}: TextInputProps & { isPassword?: boolean } & { redError: boolean }) {
   const [password, setPassword] = useState<boolean>(false)
   return (
     <View>
       <TextInput
         {...props}
-        style={styles.inputs}
+        style={[styles.inputs, redError && { borderColor: Colors.error }]}
         placeholderTextColor={Colors.gray}
         secureTextEntry={isPassword && !password}
       />

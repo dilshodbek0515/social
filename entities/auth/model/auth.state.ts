@@ -51,7 +51,8 @@ export const loginAtom = atom(
 )
 
 export const logoutAtom = atom(null, async (_get, set) => {
-  router.replace('/login/login')
+  await AsyncStorage.removeItem('visited')
+  router.replace('/welcome')
   set(loginState, {
     token: null,
     isLoading: false,

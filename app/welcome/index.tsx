@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native'
 import { useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { router } from 'expo-router'
@@ -22,9 +22,14 @@ export default function Welcome () {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to Purple School</Text>
-      <Pressable onPress={handleStart} style={styles.btn}>
-        <Text style={styles.btnText}>Get Started</Text>
+      <Image
+        style={styles.welcome__img}
+        source={require('../../assets/images/welcome__img.png')}
+        resizeMode='contain'
+      />
+      <Text style={styles.title}>SHARE - INSPIRE - CONNECT</Text>
+      <Pressable onPress={handleStart} style={styles.started}>
+        <Text style={styles.btnText}>GET STARTED</Text>
       </Pressable>
     </View>
   )
@@ -35,26 +40,33 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.light
+    backgroundColor: Colors.welcome,
+    padding: 15
+  },
+
+  welcome__img: {
+    width: '100%',
+    height: 422
   },
 
   title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: Colors.black,
-    marginBottom: 40
+    fontSize: 14,
+    fontFamily: 'Exo500',
+    color: Colors.light,
+    marginTop: 20,
+    marginBottom: 46
   },
 
-  btn: {
-    backgroundColor: Colors.active_btn,
+  started: {
+    backgroundColor: Colors.welcome__btn,
     paddingVertical: 14,
-    paddingHorizontal: 40,
-    borderRadius: 8
+    paddingHorizontal: 24,
+    borderRadius: 30
   },
 
   btnText: {
     color: Colors.light,
     fontSize: 16,
-    fontWeight: '600'
+    fontFamily: 'Exo700'
   }
 })

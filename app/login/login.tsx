@@ -102,6 +102,7 @@ export default function Login () {
                     email: value
                   }))
                 }
+                redError={!!error}
               />
             </View>
 
@@ -119,6 +120,7 @@ export default function Login () {
                     password: value
                   }))
                 }
+                redError={!!error}
               />
             </View>
 
@@ -238,6 +240,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     padding: 2
   },
+
   email_text: {
     fontSize: 12,
     fontFamily: 'Exo500',
@@ -311,7 +314,7 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderWidth: 1.5,
-    borderColor: Colors.boder,
+    borderColor: Colors.gray,
     borderRadius: 3,
     justifyContent: 'center',
     alignItems: 'center',
